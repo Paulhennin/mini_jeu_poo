@@ -1,0 +1,80 @@
+require 'bundler'
+Bundler.require
+
+require_relative 'lib/game'
+require_relative 'lib/player'
+
+def welcome
+
+  puts "     ====================================================="
+  puts "     ||                                                 ||"
+  puts "     ||    Bienvenue sur 'ILS VEULENT TOUS MA POO' !    ||"
+  puts "     || Le but du jeu est d'être le dernier survivant ! ||"
+  puts "     ||                                                 ||"
+  puts "     ====================================================="
+  puts "                     Un batle royel quoi.                 "
+  puts ""
+  puts ""
+end
+
+def players
+  welcome
+  puts "Quel est votre pseudo ?"
+  print "> "
+  name = gets.chomp
+  player_one = Humanplayer.new(name)
+  puts "Bienvenu dans notre petit jeu #{player_one.name}"
+  puts "Vous allez jouer contre 2 bots, (des mecs nuls en soit.)"
+return player_one
+end
+def bot1
+player1=Player.new("Faker")
+puts "Player1 have been added. #{player1.name} entre en jeu."
+return player1
+end
+
+def bot2
+player2=Player.new("Caps")
+puts "Player2 have been added. #{player2.name} entre en jeu."
+return player2
+end
+
+def game(search_weapon, search_health_pack,attacks)
+  player_one = players
+  player1 = bot1
+  player2 = bot2
+  while player_one.life_points > 0 && (player1.life_points > 0 || player2.life_points >0)
+    menu(player_one, player1, player2)
+    print "> "
+    choice = gets.chomp
+    case choice
+    when "a"
+      search_weapon
+    when "s"
+      search_health_pack
+    when "0"
+      player_one.attacks(player1)
+    when "1"
+      player_one.attacks(player2)
+    end
+  end
+end
+
+def menu(player_one, player1, player2)
+  puts "Vous avez #{player_one.life_points} points de vies"
+  puts ""
+  puts "Quelle action veux-tu effectuer ?"
+  puts ""
+  puts "a - chercher une meilleure arme"
+  puts "s - chercher à se soigner"
+  puts ""
+  puts "Attaquer un joueur en vue : "
+  puts "0 - #{player1.name} a #{player1.life_points} points de vies"
+  puts "1 - #{player2.name} a #{player2.life_points} points de vies"
+end
+
+def perform
+  game
+end
+
+perform
