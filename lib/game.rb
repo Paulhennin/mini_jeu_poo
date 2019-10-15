@@ -2,37 +2,34 @@ require_relative 'player'
 class Game
   attr_accessor :human_player
   attr_accessor :enemies
-  @@enemies_count = 0
+  attr_accessor :life_points
+  attr_accessor :count
 
   def initialize(name)
     @human_player = HumanPlayer.new(name)
     @enemies = []
     x= 4
     i = 1
-    x.times do
+    x.times do |i|
       player = Player.new("player#{i}")
       @enemies << player
-      i += 1
-      @@enemies_count += 1
     end
     menu
+
   end
 
   def show_state
-    puts "#{@human_player} a : #{@life_points} points de vie !"
+    puts "#{@human_player.name} a : #{@human_player.life_points} points de vie !"
+    puts "Il rest : #{@enemies.size} ennemis en lice. "
   end
 
-  def kill_player(drop_player)
-    @enemies.each do |enemies|
-      if drop_player == enemies.name
-        @enemies.name.drop
-      end
-      @@enemies_count -= 1
-    end
+  def kill_player(player)
+    @enemies.delete(player)
+    puts @enemies
   end
 
   def is_still_ongoing?
-    if @human_player.life_points < 0 || @@enemies_count == 0
+    if @human_player.life_points < 0 || @enemies.size == 0
       puts "La partie est terminée."
       endgame
     else
@@ -43,12 +40,14 @@ class Game
 
   def show_players
     puts human_player.show_state
-    puts "Il reste : #{@@enemies_count} ennemis dans la partie."
+    puts "Il reste : #{@enemies.size} ennemis dans la partie."
   end
 
   def menu
     show_state
+
     puts "Vous avez #{@human_player.life_points} points de vies"
+    puts "Votre arme est de niveau #{@weapon_level} !"
     puts ""
     puts "Quelle action veux-tu effectuer ?"
     puts ""
@@ -56,17 +55,12 @@ class Game
     puts "s - chercher à se soigner"
     puts ""
     puts "Attaquer un joueur en vue : "
-    if @enemies[0].life_points > 0
-      puts "0 - #{@enemies[0].name} a #{@enemies[0].life_points} points de vies"
-    end
-    if @enemies[1].life_points > 0
-      puts "1 - #{@enemies[1]} a #{@enemies[1].life_points} points de vies"
-    end
-    if @enemies[2].life_points > 0
-      puts "2 - #{@enemies[2].name} a #{@enemies[2].life_points} points de vies"
-    end
-    if @enemies[3].life_points > 0
-      puts "3 - #{@enemies[3].name} a #{@enemies[3].life_points} points de vies"
+    i = 0
+    while i < @enemies.size
+      if @enemies[i].life_points > 0
+        puts "#{i} - #{@enemies[i].name} a #{@enemies[i].life_points} points de vies"
+      end
+      i += 1
     end
     print "> "
     menu_choice
@@ -99,21 +93,24 @@ class Game
   end
 
   def enemies_attack
-    @ennemies.each do |player|
-      if player.life_points >0
-          puts "Au tour de #{player} de t'attaquer ! Es-tu prêts ?"
+    @enemies.each do |player|
+      if player.life_points < 0
+        kill_player(player)
+      end
+    end
+    @enemies.each do |player|
+          puts "Au tour de #{player.name} de t'attaquer ! Es-tu prêts ?"
           puts "Est tu prêts ?"
           puts "> "
           ask = gets.chomp
-        player.attacks(@human_player)
-      else kill_player(player)
+          player.attacks(@human_player)
+          puts "Il te reste #{@human_player.life_points} points de vie"
       end
-    end
     is_still_ongoing?
   end
 
     def endgame
-      if @human_player.life_points > 0 && @@enemies_count == 0
+      if @human_player.life_points > 0 && @enemies.size == 0
         puts " #{@human_player.name} a gagné la parti ! "
         puts "     ====================================================="
         puts "     ||                                                 ||"
@@ -133,4 +130,5 @@ class Game
       end
       puts ""
     end
+
 end
