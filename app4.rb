@@ -2,7 +2,7 @@ require 'bundler'
 require 'pry'
 Bundler.require
 
-require_relative 'lib/game'
+require_relative 'lib/game2'
 require_relative 'lib/player'
 
 #petit asset graphique permetant l'affichage et le début du jeux.

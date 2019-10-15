@@ -1,18 +1,22 @@
 require_relative 'player'
 class Game
-  attr_accessor :human_player , :enemies , :life_points , :player_left
-
-
+  attr_accessor :human_player , :enemies , :life_points , :player_left , :player_in_sight
+@player_left = 10
+@player_in_sight
   def initialize(name)
     #On initialise la partie, on crée notre joueur humain, et nos 4 bots
     @human_player = HumanPlayer.new(name)
     @enemies = []
-    x= 4
+    x= 9
     i = 1
     x.times do |i|
       player = Player.new("player#{i}")
       @enemies << player
+    for i 1..4 do
+      @player_in_sight << player
     end
+  end
+  puts @player_in_sight
     menu
 
   end
@@ -26,16 +30,18 @@ class Game
   def kill_player(player)
     #Comme son nom l'indique la fonction sert exclusivement à effacer les bots morts pendant le tour.
     @enemies.delete(player)
+    @player_left -= 1
     puts @enemies
+
   end
 
   def is_still_ongoing?
     #Cette fonction permet de faire un checkup de la partie à chaque tour. Si le joueur à plus de vie ou il n'y a plus de bots alors la partie se termine.
-    if @human_player.life_points < 0 || @enemies.size == 0
+    if @human_player.life_points < 0 || @player_left.size >= 1
       puts "La partie est terminée."
       endgame
     else
-      puts "La partie est toujours en cours, préparez-vous pour un nouveau round !"
+      puts "La partie est toujours en cours, courage !"
       menu
     end
   end
@@ -89,6 +95,22 @@ class Game
     when "3"
       @human_player.attacks(@enemies[3])
       puts ""
+    when "4"
+      @human_player.attacks(@enemies[4])
+      puts ""
+    when "5"
+      @human_player.attacks(@enemies[5])
+      puts ""
+    when "6"
+      @human_player.attacks(@enemies[6])
+      puts ""
+    when "7"
+      @human_player.attacks(@enemies[7])
+      puts ""
+    when "8"
+      @human_player.attacks(@enemies[8])
+      puts ""
+
     end
     puts "Votre tour est terminé ! C'est au tour des ennemis."
     #lance la def ennemies_attack
@@ -115,6 +137,16 @@ class Game
       #lance la def is_still_ongoing? a ce stade de la partie, le round est terminé.
     is_still_ongoing?
   end
+
+  def new_players_in_sight
+    if @player_in_sight.size == @enemies
+      puts "Tous les ennemis sont déjà en vue."
+    else
+
+    end
+
+  end
+
 
     def endgame
 

@@ -5,6 +5,7 @@ class Player
   @@all_player = []
 
   def initialize (name)
+    #mets en place la classe avec les différentes variables
     @name = name
     @life_points = 10
     @@all_player_count += 1
@@ -15,10 +16,13 @@ class Player
   end
 
   def show_state
-    puts "José a : #{@life_points} points de vie !"
+    #montre l'état actuel du joueur1
+      puts "José a : #{@life_points} points de vie !"
   end
 
   def gets_damage(damage_received)
+
+    #Fonction permettant de recalculer la vie du joueur après avoir pris des damages.
     @damage_received = damage_received
       @life_points = @life_points- @damage_received
       puts "#{@name} à perdu #{@damage_received} points de vie !"
@@ -28,10 +32,12 @@ class Player
   end
 
   def compute_damage
+    #fonction permettant le lancé de dé
     return (rand(1..6))
   end
 
   def attacks(player)
+    #mets en place l'attaque du joueur
     damage = compute_damage
     puts "#{@name} attaque #{player.name}"
     puts "Il lui inflige #{damage} points de dommages."
@@ -45,16 +51,19 @@ class HumanPlayer < Player
   attr_accessor :life_points
 
   def initialize(name)
+    #initialise la classe HumanPlayer donc la class du joueur humain. Vous quoi.
     @weapon_level = 1
     @life_points = 100
     @name = name
   end
 
   def compute_damage
+    #fait le lancé de dé. multiplié par l'arme équipée du joueur
     return rand(1..6) * @weapon_level
   end
 
   def search_weapon
+    #methode permettant d'améliorer son arme... Quand on est chanceux.
     found = rand(1..6)
     puts "Tu as trouvé une arme de niveau #{found} !"
     if found > @weapon_level
@@ -65,6 +74,7 @@ class HumanPlayer < Player
   end
 
   def search_health_pack
+    #methode permettant de regagner de la vie.. Quand on a de la chance.
     found = rand(1..6)
     if found == 1
       puts "Tu as fait un jet de dé de 1."
@@ -78,6 +88,7 @@ class HumanPlayer < Player
       puts "Impressionnant ! Vous avez trouvé un pack de +80 points de vie."
       @life_points = @life_points + 80
     end
+    #petite ligne supplémentaire permettant de limiter la vie maximale a 100
     if @life_points > 100
       @life_points = 100
     end

@@ -4,10 +4,10 @@ Bundler.require
 require_relative 'lib/game'
 require_relative 'lib/player'
 
-
+#ajout des bots
 player1=Player.new("Faker")
 player2=Player.new("Caps")
-
+#boucle permetant de lancer la partie 
 
     while player1.life_points > 0 && player2.life_points > 0
       puts ""

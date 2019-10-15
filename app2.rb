@@ -3,7 +3,7 @@ Bundler.require
 
 require_relative 'lib/player'
 
-
+#petit asset graphique permetant l'affichage et le début du jeux.
   puts "     ====================================================="
   puts "     ||                                                 ||"
   puts "     ||    Bienvenue sur 'ILS VEULENT TOUS MA POO' !    ||"
@@ -13,7 +13,7 @@ require_relative 'lib/player'
   puts "                     Un batle royel quoi.                 "
   puts ""
   puts ""
-
+#demande le nom du joueur et lance le jeux.
   puts "Quel est votre pseudo ?"
   print "> "
   name = gets.chomp
@@ -21,6 +21,7 @@ require_relative 'lib/player'
   puts "Bienvenu dans notre petit jeu #{player_one.name}"
   puts "Vous allez jouer contre 2 bots, (des mecs nuls en soit.)"
 enemies = []
+#ajout des bots au jeux.
 player1=Player.new("Faker")
 puts "Player1 have been added. #{player1.name} entre en jeu."
 enemies << player1
@@ -28,6 +29,8 @@ player2=Player.new("Caps")
 puts "Player2 have been added. #{player2.name} entre en jeu."
 enemies << player2
 binding.pry
+
+#Boucle disant : tant que le joueur à de la vie ET qu'au moins 1 des deux bots est vivant. Alors faire .....
 
   while player_one.life_points > 0 && (player1.life_points > 0 || player2.life_points >0)
     puts "Vous avez #{player_one.life_points} points de vies"
@@ -38,6 +41,7 @@ binding.pry
     puts "s - chercher à se soigner"
     puts ""
     puts "Attaquer un joueur en vue : "
+    #Check la vie des bots . N'affiche que le choix du bot vivant correspondant.
     if player1.life_points > 0
       puts "0 - #{player1.name} a #{player1.life_points} points de vies"
     end
@@ -46,7 +50,7 @@ binding.pry
     end
     print "> "
     choice = gets.chomp
-
+#demande le choix de l'utilisateur
     case choice
     when "a"
       player_one.search_weapon
@@ -62,6 +66,7 @@ binding.pry
       puts ""
     end
     puts ""
+    #Fait attaquer les bots survivants.
     ennemies.each do |player|
       if player.life_points >0
           puts "Au tour de #{player}de t'attaquer ! Es-tu prêts ?"
@@ -71,7 +76,7 @@ binding.pry
     end
     puts ""
   end
-
+#fin de partie
 if player_one.life_points > 0
   puts " #{player_one.name} a gagné la parti ! "
   puts "     ====================================================="
